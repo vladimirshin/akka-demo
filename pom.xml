@@ -10,17 +10,7 @@
   
   <name>${project.artifactId}</name>
   
-  <description>My wonderfull scala app</description>
-  
-  <inceptionYear>2010</inceptionYear>
-
-  <licenses>
-    <license>
-      <name>My License</name>
-      <url>http://....</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
+  <description>...</description>
 
   <properties>
     <!-- Encoding -->
@@ -52,10 +42,15 @@
       <version>${akka.version}</version>
     </dependency>
 
-    <!-- Akka Remote -->
     <dependency>
       <groupId>com.typesafe.akka</groupId>
       <artifactId>akka-remote_${scala.compat.version}</artifactId>
+      <version>${akka.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.typesafe.akka</groupId>
+      <artifactId>akka-cluster-sharding_${scala.compat.version}</artifactId>
       <version>${akka.version}</version>
     </dependency>
 
@@ -101,8 +96,6 @@
         <configuration>
           <useFile>false</useFile>
           <disableXmlReport>true</disableXmlReport>
-          <!-- If you have classpath issue like NoDefClassError,... -->
-          <!-- useManifestOnlyJar>false</useManifestOnlyJar -->
           <includes>
             <include>**/*Test.*</include>
             <include>**/*Suite.*</include>
