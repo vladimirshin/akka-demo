@@ -3,7 +3,7 @@ package com.shin.akka.actors.cluster.general
 
 import akka.actor.{Actor, ActorLogging, ActorSystem, Props}
 import akka.cluster.Cluster
-import akka.cluster.ClusterEvent._
+import akka.cluster.ClusterEvent.{InitialStateAsEvents, MemberEvent, UnreachableMember, MemberUp, MemberRemoved}
 
 
 class ClusterActor extends Actor with ActorLogging {
@@ -31,10 +31,6 @@ class ClusterActor extends Actor with ActorLogging {
     case msg@_ =>
       log.info(s"unknown [$msg] has been received")
   }
-}
-
-object ClusterActor {
-
 }
 
 object StartPoint {

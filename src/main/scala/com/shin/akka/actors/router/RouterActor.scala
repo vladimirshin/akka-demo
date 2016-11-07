@@ -5,18 +5,10 @@ import akka.actor.{Actor, ActorLogging, Props, ActorSystem}
 import akka.routing.{FromConfig, Broadcast}
 import com.typesafe.config.ConfigFactory
 
-import RouterActor.Hello
+import WorkerActor.Hello
 
-class LocalActor extends Actor with ActorLogging {
-  def receive: Actor.Receive = {
-    case unknown@_ =>
-      log.info(s"[$unknown] message had been received")
-  }
-}
 
-class RouterActor extends Actor with ActorLogging {
-
-  context.actorOf(Props[LocalActor])
+class WorkerActor extends Actor with ActorLogging {
 
   def receive: Actor.Receive = {
     case Hello(name) =>
@@ -27,7 +19,7 @@ class RouterActor extends Actor with ActorLogging {
   }
 }
 
-object RouterActor {
+object WorkerActor {
   @SerialVersionUID(1L) final case class Hello(name: String)
 }
 
@@ -45,16 +37,19 @@ object StartPoint {
         |   /router_test/ {
         |     router = round-robin-pool
         |     nr-of-instances = 3
-        |     # within = 3 seconds
+        |     #within = 3 seconds
         |     #resizer.lower-bound = 1
-        |     #resizer.upper-bound = 2
+        |     #resizer.upper-bound = 3
         |   }
         | }
       """.stripMargin
-    val system = ActorSystem.create("RouterTest", ConfigFactory.parseString(config))
-    val router = system.actorOf(FromConfig.props(Props[RouterActor]), "router_test")
+    val system = ActorSystem.create("RouterSystemTest", ConfigFactory.parseString(config))
+    val router = system.actorOf(FromConfig.props(Props[WorkerActor]), "router_test")
 
-    for (i <- 0 to 4) router ! Hello(s"[$i] Mauritius")
+//    for (i <- 0 to 4)
+//      router ! Hello(s"[$i] Mauritius")
+      router ! Hello(s"Hello Mauritius !")
+
     //for (i <- 0 until 1) router ! Broadcast(s"[$i] Mauritius")
   }
 }
